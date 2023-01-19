@@ -10,12 +10,12 @@ private func showAlert(alertInfo: AlertInfo) -> some View {
     return alertView
 }
 
-@_cdecl("justPrint")
+//@_cdecl("justPrint")
 public func justPrint(message: String) {
     print(message)
 }
 
-@_cdecl("showAlert_oneBtn")
+//@_cdecl("showAlert_oneBtn")
 public func showAlert(title: String, message: String, okBtn: String?) -> UIViewController {
     let alertView = showAlert(alertInfo: AlertInfo(alertType: .onebtn, title: title, message: message, okBtn: okBtn, cancelBtn: nil))
     let uiHostController = UIHostingController(rootView: alertView.edgesIgnoringSafeArea(.all))
@@ -28,7 +28,7 @@ public func showAlert(title: String, message: String, okBtn: String?) -> UIViewC
     return uiHostController
 }
 
-@_cdecl("showAlert_twoBtn")
+//@_cdecl("showAlert_twoBtn")
 public func showAlert(title: String, message: String, okBtn: String?, cancelBtn: String?) -> UIViewController {
     let alertView = showAlert(alertInfo: AlertInfo(alertType: .twobtn, title: title, message: message, okBtn: okBtn, cancelBtn: nil))
     let uiHostController = UIHostingController(rootView: alertView.edgesIgnoringSafeArea(.all))
