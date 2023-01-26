@@ -8,31 +8,38 @@
 import SwiftUI
 
 struct AlertView: View {
-    @State private var showAlert = false
-    @State private var alertInfo = AlertInfo.empty
+    @ObservedObject private var alertViewModel: AlertViewModel
+    @Environment(\.presentationMode) private var presentationMode
+    
+    init(alertInfo: AlertInfo) {
+        alertViewModel = AlertViewModel()
+        alertViewModel.showAlert(alertInfo: alertInfo)
+    }
     
     var body: some View {
         EmptyView()
-            .alert(isPresented: $showAlert) {
-                if alertInfo.alertType == AlertType.onebtn {
-                    return Alert(title: Text(alertInfo.title), message: Text(alertInfo.message), dismissButton: .default(Text(alertInfo.okBtn ?? "OK")) {
-                        print("ok1!!!!")
+            .alert(isPresented: $alertViewModel.showAlertFlag) {
+                if alertViewModel.alertInfo.alertType == AlertType.onebtn {
+                    return Alert(title: Text(alertViewModel.alertInfo.title), message: Text(alertViewModel.alertInfo.message), dismissButton: .default(Text(alertViewModel.alertInfo.okBtn ?? "OK")) {
+                        print("ok!!!!")
+                        alertViewModel.dismissAlert()
                     })
                 } else {
-                    return Alert(title: Text(alertInfo.title), message: Text(alertInfo.message), primaryButton: .default(Text(alertInfo.okBtn ?? "OK")) {
+                    return Alert(title: Text(alertViewModel.alertInfo.title), message: Text(alertViewModel.alertInfo.message), primaryButton: .default(Text(alertViewModel.alertInfo.okBtn ?? "OK")) {
                         print("ok2!!!!")
-                    }, secondaryButton: .cancel(Text(alertInfo.cancelBtn ?? "CANCEL")) {
+                        alertViewModel.dismissAlert()
+                    }, secondaryButton: .cancel(Text(alertViewModel.alertInfo.cancelBtn ?? "CANCEL")) {
                         print("cancel!!!!")
+                        alertViewModel.dismissAlert()
                     })
                 }
             }
-    }
-}
-
-extension AlertView {
-    func showAlert(alertInfo: AlertInfo) {
-        self.alertInfo = alertInfo
-        self.showAlert = true
+            .onReceive(alertViewModel.viewDismissPublisher) { shouldDismiss in
+                if shouldDismiss {
+                    self.presentationMode.wrappedValue.dismiss()
+                    NotificationCenter.default.post(name: NSNotification.Name("dismissModal"), object: nil)
+                }
+            }
     }
 }
 

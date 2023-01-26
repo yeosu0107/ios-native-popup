@@ -6,6 +6,7 @@ final class NativePopupTests: XCTestCase {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct
         // results.
-        XCTAssertEqual(NativePopup().text, "Hello, World!")
+        let printValue = justPrint(message: "Hello, World!")
+        XCTAssertEqual(printValue, "justPrint: Hello, World!")
     }
 }
