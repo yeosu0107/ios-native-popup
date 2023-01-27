@@ -11,6 +11,7 @@ import Combine
 class AlertViewModel: ObservableObject {
     @Published var showAlertFlag = false
     @Published var alertInfo = AlertInfo.empty
+    var delegate: NativePopupProtocol?
     
     var viewDismissPublisher = PassthroughSubject<Bool, Never>()
     
@@ -27,12 +28,21 @@ class AlertViewModel: ObservableObject {
         }
     }
     
-    func showAlert(alertInfo: AlertInfo) {
+    func showAlert(alertInfo: AlertInfo, delegate: NativePopupProtocol?) {
         self.alertInfo = alertInfo
         self.showAlertFlag = true
+        self.delegate = delegate
     }
     
     func dismissAlert() {
         dismissView()
+    }
+    
+    func onOk() {
+        delegate?.OnOK()
+    }
+    
+    func onCancel() {
+        delegate?.OnCancel()
     }
 }

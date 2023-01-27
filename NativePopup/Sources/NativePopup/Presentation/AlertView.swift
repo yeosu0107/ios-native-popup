@@ -11,9 +11,9 @@ struct AlertView: View {
     @ObservedObject private var alertViewModel: AlertViewModel
     @Environment(\.presentationMode) private var presentationMode
     
-    init(alertInfo: AlertInfo) {
+    init(alertInfo: AlertInfo, delegate: NativePopupProtocol?) {
         alertViewModel = AlertViewModel()
-        alertViewModel.showAlert(alertInfo: alertInfo)
+        alertViewModel.showAlert(alertInfo: alertInfo, delegate: delegate)
     }
     
     var body: some View {
@@ -21,15 +21,15 @@ struct AlertView: View {
             .alert(isPresented: $alertViewModel.showAlertFlag) {
                 if alertViewModel.alertInfo.alertType == AlertType.onebtn {
                     return Alert(title: Text(alertViewModel.alertInfo.title), message: Text(alertViewModel.alertInfo.message), dismissButton: .default(Text(alertViewModel.alertInfo.okBtn ?? "OK")) {
-                        print("ok!!!!")
+                        alertViewModel.onOk()
                         alertViewModel.dismissAlert()
                     })
                 } else {
                     return Alert(title: Text(alertViewModel.alertInfo.title), message: Text(alertViewModel.alertInfo.message), primaryButton: .default(Text(alertViewModel.alertInfo.okBtn ?? "OK")) {
-                        print("ok2!!!!")
+                        alertViewModel.onOk()
                         alertViewModel.dismissAlert()
                     }, secondaryButton: .cancel(Text(alertViewModel.alertInfo.cancelBtn ?? "CANCEL")) {
-                        print("cancel!!!!")
+                        alertViewModel.onCancel()
                         alertViewModel.dismissAlert()
                     })
                 }
