@@ -9,7 +9,7 @@ import UIKit
 import SwiftUI
 import Foundation
 
-@objc public class NativePopupManager: NSObject {
+public class NativePopupManager: NSObject {
     private func getRootViewController() -> UIViewController? {
         let rootViewController = UIApplication.shared.windows.first?.rootViewController
         
@@ -40,15 +40,15 @@ import Foundation
         rootViewController?.present(uiHostController, animated: true)
     }
     
-    @objc public func showAlert(title: String, message: String, ok: String?, delegate: NativePopupProtocol?) {
+    public func showAlert(title: String, message: String, ok: String?, delegate: NativePopupProtocol?) {
         self.showAlertView(alertType: AlertType.onebtn, title: title, message: message, ok: ok, cancel: nil, delegate: delegate)
     }
     
-    @objc public func showAlert(title: String, message: String, ok: String?, cancel: String?, delegate: NativePopupProtocol?) {
+    public func showAlert(title: String, message: String, ok: String?, cancel: String?, delegate: NativePopupProtocol?) {
         self.showAlertView(alertType: AlertType.twobtn, title: title, message: message, ok: ok, cancel: cancel, delegate: delegate)
     }
     
-    @objc public func showToast(message: String, duration: Double) {
+    public func showToast(message: String, duration: Double) {
         print("not support yet")
     }
 }
